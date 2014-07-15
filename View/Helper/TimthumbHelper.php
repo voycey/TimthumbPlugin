@@ -68,6 +68,10 @@ class TimthumbHelper extends AppHelper {
  * @return string - image tag with timthumb image src
  */
      public function image($path, $timthumbOptions = array(), $options = array()) {
+        if(filter_var($path, FILTER_VALIDATE_URL)) {
+            //its a url (e.g. a gravatar - just return the image correct width
+            return $this->Html->image($path, array_merge($timthumbOptions, $options, array('escape' => false)));
+        }
         if(empty($path) || !file_exists(WWW_ROOT.$path)) {
             $path = Configure::read('TimthumbDefaultImg');
         }
